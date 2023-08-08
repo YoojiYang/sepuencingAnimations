@@ -17,6 +17,7 @@ const alice3 = document.querySelector("#alice3");
 // alice2.animate(aliceTumbling, aliceTiming);
 // alice3.animate(aliceTumbling, aliceTiming);
 
+
 function animateElement(element) {
   return new Promise((resolve) => {
     const animation = element.animate(aliceTumbling, aliceTiming);
@@ -24,9 +25,24 @@ function animateElement(element) {
   });
 }
 
-animateElement(alice1)
-  .then(() => animateElement(alice2))
-  .then(() => animateElement(alice3))
-  .catch((error) => {
-    console.error(`Failed to fetch: ${error}`);
-  });
+// プロミス連鎖バージョン
+// animateElement(alice1)
+//   .then(() => animateElement(alice2))
+//   .then(() => animateElement(alice3))
+//   .catch((error) => {
+//     console.error(`Failed to animate: ${error}`);
+//   });
+
+
+// async awaitバージョン
+async function animateSequence() {
+  try {
+    await animateElement(alice1);
+    await animateElement(alice2);
+    await animateElement(alice3);
+  } catch(error) {
+    console.error(`Failed to animate: ${error}`);
+  }
+}
+
+animateSequence();
